@@ -1,30 +1,28 @@
 <div class="table-responsive">
-    <table class="table" id="facultads-table">
+    <table class="table" id="materiaEspaciosAudits-table">
         <thead>
         <tr>
-            <th>Nombre de la facultad</th>
+            <th>Campo</th>
+        <th>Antiguo Valor</th>
+        <th>Nuevo Valor</th>
+        <th>Fecha</th>
             <th colspan="3">Action</th>
         </tr>
         </thead>
         <tbody>
-        @foreach($facultads as $facultad)
+        @foreach($materiaEspaciosAudits as $materiaEspaciosAudit)
             <tr>
-                <td>{{ $facultad->nombreFacu }}</td>
+                <td>{{ $materiaEspaciosAudit->campo }}</td>
+            <td>{{ $materiaEspaciosAudit->antiguo_valor }}</td>
+            <td>{{ $materiaEspaciosAudit->nuevo_valor }}</td>
+            <td>{{ $materiaEspaciosAudit->fecha }}</td>
                 <td width="120">
-                    {!! Form::open(['route' => ['facultads.destroy', $facultad->id], 'method' => 'delete']) !!}
+                    {!! Form::open(['route' => ['materiaEspaciosAudits.destroy', $materiaEspaciosAudit->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
-
-                    <a href="{{ route('facultads.show', [$facultad->id]) }}"
+                        <a href="{{ route('materiaEspaciosAudits.show', [$materiaEspaciosAudit->id]) }}"
                            class='btn btn-default btn-xs'>
                             <i class="far fa-eye"></i>
                         </a>
-                    @can('view_facultad')
-                    <a href="{{ route('facultads.edit', [$facultad->id]) }}"
-                           class='btn btn-default btn-xs'>
-                            <i class="far fa-edit"></i>
-                        </a>
-                        @endcan
-                        
                         
                         {!! Form::button('<i class="far fa-trash-alt"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Estas seguro?')"]) !!}
                     </div>

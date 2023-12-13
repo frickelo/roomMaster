@@ -5,13 +5,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Materia Espacios</h1>
+                    <h1>Clase</h1>
                 </div>
                 <div class="col-sm-6">
                 @can('create_facultad')
                 <a class="btn btn-primary float-right"
                        href="{{ route('materiaEspacios.create') }}">
-                        Add New
+                        Agregar nuevo 
                     </a>
                 @endcan
                     

@@ -2,10 +2,10 @@
     <table class="table" id="espacios-table">
         <thead>
         <tr>
-            <th>Edificioesp</th>
-        <th>Sectoresp</th>
-        <th>Capacidadesp</th>
-        <th>Salaesp</th>
+            <th>Edificio</th>
+        <th>Sector</th>
+        <th>Capacidad</th>
+        <th>Sala</th>
             <th colspan="3">Action</th>
         </tr>
         </thead>

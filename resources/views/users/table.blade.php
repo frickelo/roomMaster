@@ -5,7 +5,7 @@
             <th>Name</th>
         <th>Email</th>
         
-        <th>Role</th>
+        <th>Rol</th>
         <th>Carrera</th>
         <th>Curso</th>
             <th colspan="3">Action</th>

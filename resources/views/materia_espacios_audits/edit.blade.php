@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1>Crear Materia</h1>
+                    <h1>Edit Materia Espacios Audit</h1>
                 </div>
             </div>
         </div>
@@ -17,19 +17,17 @@
 
         <div class="card">
 
-            {!! Form::open(['route' => 'materias.store']) !!}
+            {!! Form::model($materiaEspaciosAudit, ['route' => ['materiaEspaciosAudits.update', $materiaEspaciosAudit->id], 'method' => 'patch']) !!}
 
             <div class="card-body">
-
                 <div class="row">
-                    @include('materias.fields')
+                    @include('materia_espacios_audits.fields')
                 </div>
-
             </div>
 
             <div class="card-footer">
-                {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('materias.index') }}" class="btn btn-default">Cancelar</a>
+                {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
+                <a href="{{ route('materiaEspaciosAudits.index') }}" class="btn btn-default">Cancel</a>
             </div>
 
             {!! Form::close() !!}

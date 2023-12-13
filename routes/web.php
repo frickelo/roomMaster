@@ -48,3 +48,6 @@ Route::resource('users', App\Http\Controllers\UserController::class);
 
 
 
+
+
+Route::resource('materiaEspaciosAudits', App\Http\Controllers\materia_espacios_auditController::class);

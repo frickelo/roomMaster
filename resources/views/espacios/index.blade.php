@@ -10,7 +10,7 @@
                 <div class="col-sm-6">
                     <a class="btn btn-primary float-right"
                        href="{{ route('espacios.create') }}">
-                        Add New
+                        Agregar Nuevo
                     </a>
                 </div>
             </div>

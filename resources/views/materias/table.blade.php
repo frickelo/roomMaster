@@ -2,7 +2,7 @@
     <table class="table" id="materias-table">
         <thead>
         <tr>
-            <th>Nombremat</th>
+            <th>Nombre de la materia</th>
             <th colspan="3">Action</th>
         </tr>
         </thead>

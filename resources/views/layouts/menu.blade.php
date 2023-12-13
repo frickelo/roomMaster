@@ -56,7 +56,7 @@
 <li class="nav-item">
     <a href="{{ route('materiaEspacios.index') }}"
        class="nav-link {{ Request::is('materiaEspacios*') ? 'active' : '' }}">
-        <p>Materia Espacios</p>
+        <p>Clase del dia</p>
     </a>
 </li>
 
@@ -69,9 +69,19 @@
 <li class="nav-item">
     <a href="{{ route('users.index') }}"
        class="nav-link {{ Request::is('users*') ? 'active' : '' }}">
-        <p>Users</p>
+        <p>Usuarios</p>
     </a>
 </li>
+@endcan
+
+@canany(['edit_facultad','delete_facultad','create_facultad'])
+<li class="nav-item">
+    <a href="{{ route('materiaEspaciosAudits.index') }}"
+       class="nav-link {{ Request::is('materiaEspaciosAudits*') ? 'active' : '' }}">
+        <p>Auditoria</p>
+    </a>
+</li>
+
 @endcan
 
 

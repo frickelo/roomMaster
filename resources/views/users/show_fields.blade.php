@@ -1,6 +1,6 @@
 <!-- Name Field -->
 <div class="col-sm-12">
-    {!! Form::label('name', 'Name:') !!}
+    {!! Form::label('name', 'Nombre:') !!}
     <p>{{ $user->name }}</p>
 </div>
 
@@ -18,7 +18,7 @@
 
 <!-- Role Field -->
 <div class="col-sm-12">
-    {!! Form::label('role', 'Role:') !!}
+    {!! Form::label('role', 'Rol:') !!}
     <p>{{ $user->role }}</p>
 </div>
 
