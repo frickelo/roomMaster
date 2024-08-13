@@ -1,19 +1,19 @@
 <!-- Dia Semana Field -->
 <div class="col-sm-12">
     {!! Form::label('dia_semana', 'Dia Semana:') !!}
-    <p>{{ $materiaEspacio->dia_semana }}</p>
+    <p>{{ \Carbon\Carbon::parse($materiaEspacio->dia_semana)->format('Y-m-d') }}</p>
 </div>
 
 <!-- Hora Entrada Field -->
 <div class="col-sm-12">
     {!! Form::label('hora_entrada', 'Hora Entrada:') !!}
-    <p>{{ $materiaEspacio->hora_entrada }}</p>
+    <p>{{ \Carbon\Carbon::parse($materiaEspacio->hora_entrada)->format('H:i') }}</p>
 </div>
 
 <!-- Hora Salida Field -->
 <div class="col-sm-12">
     {!! Form::label('hora_salida', 'Hora Salida:') !!}
-    <p>{{ $materiaEspacio->hora_salida }}</p>
+    <p>{{ \Carbon\Carbon::parse($materiaEspacio->hora_salida)->format('H:i') }}</p>
 </div>
 
 <!-- Periodo Field -->

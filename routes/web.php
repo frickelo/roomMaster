@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+use App\Http\Controllers\Materia_espacioController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,8 +48,7 @@ Route::resource('espacios', App\Http\Controllers\EspacioController::class);
 
 Route::resource('users', App\Http\Controllers\UserController::class);
 
-
-
+Route::get('/get-espacios/{materia}', [Materia_espacioController::class, 'getEspacios']);
 
 
 Route::resource('materiaEspaciosAudits', App\Http\Controllers\materia_espacios_auditController::class);

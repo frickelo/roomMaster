@@ -69,28 +69,25 @@ class Materia_espacioController extends AppBaseController
      */
     public function create()
 {
-    // Obtener todas las materias con su carrera relacionada y crear un array de 'id' => 'nombreMat - nombreCarr'
+    // Obtener todas las materias con su carrera relacionada y la cantidad de alumnos
     $materias = Materia::with('carrera')->get()->mapWithKeys(function ($materia) {
-        return [$materia->id => $materia->nombreMat . ' - ' . $materia->carrera->nombreCarr];
+        return [$materia->id => $materia->nombreMat];
     });
 
-    // Obtener todos los espacios y concatenar 'salaEsp', 'sectorEsp' y 'edificioEsp' para cada uno
-    $espacios = Espacio::all()->mapWithKeys(function ($espacio) {
-        return [$espacio->id => $espacio->salaEsp . ' - ' . $espacio->sectorEsp . '   ' . $espacio->edificioEsp];
-    });
+    // Obtener solo los nombres de las carreras
+    $carreras = Carrera::pluck('nombreCarr', 'id');
 
     // Obtener todos los cursos y concatenar 'nombreCur' y 'nombreCarr' para cada uno
     $cursos = Curso::with('carrera')->get()->mapWithKeys(function ($curso) {
         return [$curso->id => $curso->nombreCur . ' - ' . $curso->carrera->nombreCarr];
     });
 
-    // Obtener solo los nombres de las carreras
-    $carreras = Carrera::pluck('nombreCarr', 'id');
-
     // Pasar todos los datos a la vista
-    return view('materia_espacios.create', compact('materias', 'espacios', 'cursos', 'carreras'));
+    return view('materia_espacios.create', compact('materias', 'cursos', 'carreras'));
 }
 
+
+    
 
 
     /**
@@ -101,44 +98,79 @@ class Materia_espacioController extends AppBaseController
      * @return Response
      */
     public function store(Request $request)
+    {
+        // Asumiendo que 'espacios_id' es el campo que contiene la clave foránea en el formulario
+        $espacioId = $request->input('espacios_id');
+        $materiaId = $request->input('materias_id'); // Añadido para validar la capacidad de la materia seleccionada
+        $diaSemana = $request->input('dia_semana');
+        $horaEntrada = $request->input('hora_entrada');
+        $horaSalida = $request->input('hora_salida');
+    
+        // Encuentra el espacio correspondiente al 'espacios_id' enviado
+        $espacio = Espacio::find($espacioId);
+        if (!$espacio) {
+            Flash::error('El espacio seleccionado no existe.');
+            return redirect(route('materiaEspacios.index'));
+        }
+    
+        // Encuentra la materia correspondiente al 'materias_id' enviado
+        $materia = Materia::find($materiaId);
+        if (!$materia) {
+            Flash::error('La materia seleccionada no existe.');
+            return redirect(route('materiaEspacios.index'));
+        }
+    
+        // Validar que la capacidad del espacio sea suficiente
+        if ($materia->cantidadAlu > $espacio->capacidadEsp + 5) {
+            Flash::error('El espacio seleccionado no puede albergar a todos los estudiantes de la materia.');
+            return redirect(route('materiaEspacios.index'));
+        }
+    
+        // Validación para evitar solapamientos de horarios
+        $existe = Materia_espacio::where('dia_semana', $diaSemana)
+            ->whereHas('espacio', function ($query) use ($espacio) {
+                $query->where('salaEsp', $espacio->salaEsp)
+                      ->where('sectorEsp', $espacio->sectorEsp);
+            })
+            ->where(function ($query) use ($horaEntrada, $horaSalida) {
+                $query->where(function ($q) use ($horaEntrada, $horaSalida) {
+                    $q->where('hora_entrada', '<', $horaSalida)
+                      ->where('hora_salida', '>', $horaEntrada);
+                });
+            })->exists();
+    
+        if ($existe) {
+            // Si existe un registro con un solapamiento de horario, no se guarda y se retorna un mensaje
+            Flash::error('La sala ya está asignada dentro del rango de horario seleccionado.');
+            return redirect(route('materiaEspacios.index'));
+        } else {
+            // Si no existe solapamiento, se procede a guardar el nuevo registro
+            $materiaEspacio = new Materia_espacio($request->all());
+            $materiaEspacio->save();
+            Flash::success('Sala asignada correctamente.');
+            return redirect(route('materiaEspacios.index'));
+        }
+    }
+    
+
+    
+public function getEspacios($materiaId)
 {
-    // Asumiendo que 'espacios_id' es el campo que contiene la clave foránea en el formulario
-    $espacioId = $request->input('espacios_id');
-    $diaSemana = $request->input('dia_semana');
-    $horaEntrada = $request->input('hora_entrada');
-    $horaSalida = $request->input('hora_salida');
+    // Encuentra la materia por ID
+    $materia = Materia::find($materiaId);
 
-    // Encuentra el espacio correspondiente al 'espacios_id' enviado
-    $espacio = Espacio::find($espacioId);
-    if (!$espacio) {
-        Flash::error('El espacio seleccionado no existe.');
-        return redirect(route('materiaEspacios.index'));
+    if (!$materia) {
+        return response()->json([], 404); // Devuelve una respuesta vacía si la materia no se encuentra
     }
 
-    // Validación para evitar solapamientos de horarios
-    $existe = Materia_espacio::where('dia_semana', $diaSemana)
-                            ->whereHas('espacio', function ($query) use ($espacio) {
-                                $query->where('salaEsp', $espacio->salaEsp)
-                                      ->where('sectorEsp', $espacio->sectorEsp);
-                            })
-                            ->where(function ($query) use ($horaEntrada, $horaSalida) {
-                                $query->where(function ($q) use ($horaEntrada, $horaSalida) {
-                                    $q->where('hora_entrada', '<', $horaSalida)
-                                      ->where('hora_salida', '>', $horaEntrada);
-                                });
-                            })->exists();
+    // Obtén la cantidad de alumnos para la materia seleccionada
+    $cantidadAlu = $materia->cantidadAlu;
 
-    if ($existe) {
-        // Si existe un registro con un solapamiento de horario, no se guarda y se retorna un mensaje
-        Flash::error('La sala ya está asignada dentro del rango de horario seleccionado.');
-        return redirect(route('materiaEspacios.index'));
-    } else {
-        // Si no existe solapamiento, se procede a guardar el nuevo registro
-        $materiaEspacio = new Materia_espacio($request->all());
-        $materiaEspacio->save();
-        Flash::success('Sala asignada correctamente.');
-        return redirect(route('materiaEspacios.index'));
-    }
+    // Filtra los espacios basados en la capacidad, restando 5 para permitir cierto margen
+    $espacios = Espacio::where('capacidadEsp', '>=', $cantidadAlu)->get();
+
+    // Devuelve los espacios en formato JSON
+    return response()->json($espacios);
 }
 
     
