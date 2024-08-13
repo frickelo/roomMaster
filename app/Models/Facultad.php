@@ -57,4 +57,8 @@ class Facultad extends Model
     {
         return $this->hasMany('App\Models\Carrera');
     }
+
+    
+
+
 }

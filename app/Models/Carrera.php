@@ -64,6 +64,11 @@ class Carrera extends Model
     {
         return $this->hasMany('App\Models\Curso');
     }
+    
+    public function materias()
+    {
+        return $this->hasMany('App\Models\Materia');
+    }
 
     public function materia_espacios()
     {

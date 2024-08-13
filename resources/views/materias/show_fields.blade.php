@@ -5,8 +5,13 @@
 </div>
 
 <div class="col-sm-12">
-    {!! Form::label('cursos_id', 'Curso:') !!}
-    <p>{{ $materia->curso->nombreCur }}</p>
+    {!! Form::label('cantidadAlu', 'Cantidad de Alumnos:') !!}
+    <p>{{ $materia->cantidadAlu }}</p>
+</div>
+
+<div class="col-sm-12">
+    {!! Form::label('carreras_id', 'Carrera:') !!}
+    <p>{{ $materia->carrera->nombreCarr }}</p>
 </div>
 
 <!-- Created At Field -->
@@ -20,4 +25,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $materia->updated_at }}</p>
 </div>
-

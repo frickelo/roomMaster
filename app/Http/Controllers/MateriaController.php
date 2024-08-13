@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateMateriaRequest;
 use App\Repositories\MateriaRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
-use App\Models\Curso;
+use App\Models\Carrera;
 use Flash;
 use Response;
 
@@ -43,8 +43,8 @@ class MateriaController extends AppBaseController
      */
     public function create()
     {
-        $cursos = Curso::pluck('nombreCur', 'id');
-        return view('materias.create', compact('cursos'));
+        $carreras = Carrera::pluck('nombreCarr', 'id');
+        return view('materias.create', compact('carreras'));
        // return view('materias.create');
     }
 
@@ -76,7 +76,7 @@ class MateriaController extends AppBaseController
     public function show($id)
     {
         $materia = $this->materiaRepository->find($id);
-        $cursos = Curso::pluck('nombreCur', 'id');
+        $carreras =Carrera::pluck('nombreCarr','id');
 
         if (empty($materia)) {
             Flash::error('Materia not found');
@@ -84,7 +84,7 @@ class MateriaController extends AppBaseController
             return redirect(route('materias.index'));
         }
         
-        return view ('materias.show', compact('materia', 'cursos'));
+        return view ('materias.show', compact('materia', 'carreras'));
         //return view('materias.show')->with('materia', $materia);
     }
 
@@ -98,7 +98,7 @@ class MateriaController extends AppBaseController
     public function edit($id)
     {
         $materia = $this->materiaRepository->find($id);
-        $cursos = Curso::pluck('nombreCur', 'id');
+        $carreras =Carrera::pluck('nombreCarr','id');
         if (empty($materia)) {
             Flash::error('Materia not found');
 
@@ -106,7 +106,7 @@ class MateriaController extends AppBaseController
         }
 
         //return view('materias.edit')->with('materia', $materia);
-        return view ('materias.edit', compact('materia', 'cursos'));
+        return view ('materias.edit', compact('materia', 'carreras'));
     }
 
     /**

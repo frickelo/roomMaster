@@ -27,8 +27,10 @@ class Materia extends Model
 
 
     public $fillable = [
-        'cursos_id',
-        'nombreMat'
+        'carreras_id',
+        'nombreMat',
+        'cantidadAlu'
+
     ];
 
     /**
@@ -46,14 +48,14 @@ class Materia extends Model
      * @var array
      */
     public static $rules = [
-        'nombreMat' => 'required'
+        'nombreMat' => 'required',
+        'cantidadAlu' => 'required'
     ];
 
-    public function curso()
+    public function carrera()
     {
-        return $this->belongsTo('App\Models\Curso','cursos_id');
+        return $this->belongsTo('App\Models\Carrera','carreras_id');
     }
-
 
     public function materias()
     {
@@ -66,3 +68,4 @@ class Materia extends Model
     }
     
 }
+

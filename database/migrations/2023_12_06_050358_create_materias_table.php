@@ -16,9 +16,10 @@ class CreateMateriasTable extends Migration
     {
         Schema::create('materias', function (Blueprint $table) {
             $table->id('id');
-            $table->unsignedBigInteger('cursos_id');
-            $table->foreign('cursos_id')->references('id')->on('cursos');
+            $table->unsignedBigInteger('carreras_id');
+            $table->foreign('carreras_id')->references('id')->on('carreras');
             $table->String('nombreMat');
+            $table->Integer('cantidadAlu');
             $table->timestamps();
             $table->softDeletes();
         });

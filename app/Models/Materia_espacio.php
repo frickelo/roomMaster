@@ -18,15 +18,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Materia_espacio extends Model
 {
-    use SoftDeletes;
-
+    
     use HasFactory;
 
     public $table = 'materia_espacios';
     
-
-    protected $dates = ['deleted_at'];
-
 
 
     public $fillable = [

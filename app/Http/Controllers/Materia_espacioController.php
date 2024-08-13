@@ -34,27 +34,25 @@ class Materia_espacioController extends AppBaseController
      * @return Response
      */
     public function index(Request $request)
-    {
-        // Obtén el usuario autenticado
-        $user = auth()->user();
+{
+    $user = auth()->user();
     
-        // Verifica si el usuario es un administrador
-        if ($user->carrera == 'admin' && $user->curso == 'admin') {
-            // Si es administrador, obtiene todos los registros
-            $materiaEspacios = Materia_espacio::all();
-        } else {
-            // Si no es administrador, filtra los materia_espacios basándose en la carrera y el curso del usuario
-            $materiaEspacios = Materia_espacio::whereHas('curso', function ($query) use ($user) {
-                $query->where('nombreCur', $user->curso);
-            })->whereHas('carrera', function ($query) use ($user) {
-                $query->where('nombreCarr', $user->carrera);
-            })->get();
-        }
-    
-        // Pasa los materia_espacios filtrados a la vista
-        return view('materia_espacios.index')
-            ->with('materiaEspacios', $materiaEspacios);
+    if ($user->carrera == 'admin' && $user->curso == 'admin') {
+        $materiaEspacios = Materia_espacio::all();
+    } else {
+        $materiaEspacios = Materia_espacio::whereHas('curso', function ($query) use ($user) {
+            $query->where('nombreCur', $user->curso);
+        })->whereHas('carrera', function ($query) use ($user) {
+            $query->where('nombreCarr', $user->carrera);
+        })->get();
     }
+    
+   
+    
+    return view('materia_espacios.index')
+        ->with('materiaEspacios', $materiaEspacios);
+}
+
     
     /*public function index(Request $request)
     {
@@ -70,18 +68,30 @@ class Materia_espacioController extends AppBaseController
      * @return Response
      */
     public function create()
-    {
-        $materias = Materia::pluck('nombreMat', 'id');
-        $espacios = Espacio::all()->mapWithKeys(function ($espacio) {
-            return [$espacio->id => $espacio->salaEsp . ' - ' . $espacio->sectorEsp . '   ' . $espacio->edificioEsp];
-        });
-        // Asegúrate de tener las relaciones adecuadas en tus modelos para acceder a 'curso' y 'carrera'
-        $cursos = Curso::pluck('nombreCur', 'id');
-        $carreras = Carrera::pluck('nombreCarr', 'id');
-    
-        // Pasa todos los datos a la vista
-        return view('materia_espacios.create', compact('materias', 'espacios', 'cursos', 'carreras'));
-    }
+{
+    // Obtener todas las materias con su carrera relacionada y crear un array de 'id' => 'nombreMat - nombreCarr'
+    $materias = Materia::with('carrera')->get()->mapWithKeys(function ($materia) {
+        return [$materia->id => $materia->nombreMat . ' - ' . $materia->carrera->nombreCarr];
+    });
+
+    // Obtener todos los espacios y concatenar 'salaEsp', 'sectorEsp' y 'edificioEsp' para cada uno
+    $espacios = Espacio::all()->mapWithKeys(function ($espacio) {
+        return [$espacio->id => $espacio->salaEsp . ' - ' . $espacio->sectorEsp . '   ' . $espacio->edificioEsp];
+    });
+
+    // Obtener todos los cursos y concatenar 'nombreCur' y 'nombreCarr' para cada uno
+    $cursos = Curso::with('carrera')->get()->mapWithKeys(function ($curso) {
+        return [$curso->id => $curso->nombreCur . ' - ' . $curso->carrera->nombreCarr];
+    });
+
+    // Obtener solo los nombres de las carreras
+    $carreras = Carrera::pluck('nombreCarr', 'id');
+
+    // Pasar todos los datos a la vista
+    return view('materia_espacios.create', compact('materias', 'espacios', 'cursos', 'carreras'));
+}
+
+
 
     /**
      * Store a newly created Materia_espacio in storage.
@@ -166,7 +176,6 @@ class Materia_espacioController extends AppBaseController
         // Retornar la vista 'materia_espacios.show' con las variables 'materiaEspacio', 'materias', 'espacios', 'cursos' y 'carreras'
         return view('materia_espacios.show', compact('materiaEspacio', 'materias', 'espacios', 'cursos', 'carreras'));
     }
-
     /**
      * Show the form for editing the specified Materia_espacio.
      *

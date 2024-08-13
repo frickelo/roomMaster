@@ -10,7 +10,9 @@
         @foreach($materias as $materia)
             <tr>
                 <td>{{ $materia->nombreMat }}</td>
-                <td>{{ $materia->curso->nombreCur}}</td>
+                <td>{{ $materia->cantidadAlu }}</td>
+                <td>{{ $materia->carrera->nombreCarr}}</td> 
+
                 <td width="120">
                     {!! Form::open(['route' => ['materias.destroy', $materia->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
