@@ -8,10 +8,13 @@
     {!! Form::number('cantidadAlu', null, ['class' => 'form-control']) !!} 
 </div>
 
-
-<br>
-	<div class ="form-group col-md-13">
-	{!! Form::label('carreras_id', 'Seleccionar carrera:') !!}
-     {!! Form::select('carreras_id', $carreras, null, ['class' => 'form-control custom-select','placeholder'=>'Seleccione']) !!}
-	 </div>
-	<br>
+<!-- Seleccionar carrera -->
+<div class="form-group col-md-6 col-sm-12">
+    {!! Form::label('carreras_id', 'Seleccionar Carrera:') !!}
+    <?php
+        $carreras = App\Models\Carrera::when(!auth()->user()->hasRole('super_admin'), function ($query) {
+            $query->where('facultades_id', auth()->user()->facultades_id);
+        })->pluck('nombreCarr', 'id');
+    ?>
+    {!! Form::select('carreras_id', $carreras, null, ['class' => 'form-control custom-select', 'placeholder' => 'Seleccione']) !!}
+</div>

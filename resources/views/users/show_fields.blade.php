@@ -10,12 +10,6 @@
     <p>{{ $user->email }}</p>
 </div>
 
-<!-- Password Field -->
-<div class="col-sm-12">
-    {!! Form::label('password', 'Password:') !!}
-    <p>{{ $user->password }}</p>
-</div>
-
 <!-- Role Field -->
 <div class="col-sm-12">
     {!! Form::label('role', 'Rol:') !!}
@@ -34,6 +28,13 @@
     <p>{{ $user->curso }}</p>
 </div>
 
+<!-- Facultad Field -->
+<div class="col-sm-12">
+    {!! Form::label('facultad', 'Facultad:') !!}
+    <p>{{ $user->facultad->nombreFacu ?? 'Sin Facultad' }}</p>
+</div>
+
+
 <!-- Created At Field -->
 <div class="col-sm-12">
     {!! Form::label('created_at', 'Created At:') !!}
@@ -45,4 +46,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $user->updated_at }}</p>
 </div>
-

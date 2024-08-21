@@ -22,7 +22,6 @@
     {!! Form::select('role', $roleItems, null, ['class' => 'form-control custom-select']) !!}
 </div>
 
-
 <!-- Carrera Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('carrera', 'Carrera:') !!}
@@ -33,4 +32,10 @@
 <div class="form-group col-sm-6">
     {!! Form::label('curso', 'Curso:') !!}
     {!! Form::text('curso', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- Facultad Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('facultades_id', 'Facultad:') !!}
+    {!! Form::select('facultades_id', $facultades, null, ['class' => 'form-control custom-select']) !!}
 </div>

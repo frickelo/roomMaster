@@ -8,13 +8,12 @@
                     <h1>Clase</h1>
                 </div>
                 <div class="col-sm-6">
-                @can('create_facultad')
-                <a class="btn btn-primary float-right"
+                    @role('admin|super_admin')
+                    <a class="btn btn-primary float-right"
                        href="{{ route('materiaEspacios.create') }}">
                         Agregar nuevo 
                     </a>
-                @endcan
-                    
+                    @endrole
                 </div>
             </div>
         </div>
@@ -41,4 +40,3 @@
     </div>
 
 @endsection
-

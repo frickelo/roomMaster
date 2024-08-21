@@ -15,3 +15,9 @@
     {!! Form::label('nuevo_valor', 'Nuevo Valor:') !!}
     {!! Form::text('nuevo_valor', null, ['class' => 'form-control']) !!}
 </div>
+
+<!-- Autor Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('autor', 'Autor:') !!}
+    {!! Form::text('autor', null, ['class' => 'form-control']) !!}
+</div>

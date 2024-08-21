@@ -3,6 +3,7 @@
         <thead>
         <tr>
             <th>Carrera</th>
+            <th>Facultad</th>
             <th colspan="3">Action</th>
         </tr>
         </thead>

@@ -2,7 +2,8 @@
     <table class="table" id="cursos-table">
         <thead>
         <tr>
-            <th>Nombrecur</th>
+            <th>Curso</th>
+            <th>Carrera</th>
             <th colspan="3">Action</th>
         </tr>
         </thead>

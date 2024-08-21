@@ -3,9 +3,10 @@
         <thead>
         <tr>
             <th>Campo</th>
-        <th>Antiguo Valor</th>
-        <th>Nuevo Valor</th>
-        <th>Fecha</th>
+            <th>Antiguo Valor</th>
+            <th>Nuevo Valor</th>
+            <th>Fecha</th>
+            <th>Autor</th> <!-- Nueva columna -->
             <th colspan="3">Action</th>
         </tr>
         </thead>
@@ -13,9 +14,10 @@
         @foreach($materiaEspaciosAudits as $materiaEspaciosAudit)
             <tr>
                 <td>{{ $materiaEspaciosAudit->campo }}</td>
-            <td>{{ $materiaEspaciosAudit->antiguo_valor }}</td>
-            <td>{{ $materiaEspaciosAudit->nuevo_valor }}</td>
-            <td>{{ $materiaEspaciosAudit->fecha }}</td>
+                <td>{{ $materiaEspaciosAudit->antiguo_valor }}</td>
+                <td>{{ $materiaEspaciosAudit->nuevo_valor }}</td>
+                <td>{{ $materiaEspaciosAudit->fecha }}</td>
+                <td>{{ $materiaEspaciosAudit->autor }}</td> <!-- Nueva columna -->
                 <td width="120">
                     {!! Form::open(['route' => ['materiaEspaciosAudits.destroy', $materiaEspaciosAudit->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
@@ -23,7 +25,6 @@
                            class='btn btn-default btn-xs'>
                             <i class="far fa-eye"></i>
                         </a>
-                        
                         {!! Form::button('<i class="far fa-trash-alt"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Estas seguro?')"]) !!}
                     </div>
                     {!! Form::close() !!}
@@ -33,3 +34,4 @@
         </tbody>
     </table>
 </div>
+

@@ -3,6 +3,8 @@
         <thead>
         <tr>
             <th>Nombre de la materia</th>
+            <th>Cantidad Alumnos</th>
+            <th>Carreras</th>
             <th colspan="3">Action</th>
         </tr>
         </thead>

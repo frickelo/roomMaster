@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-
 use App\Http\Controllers\Materia_espacioController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +15,7 @@ use App\Http\Controllers\Materia_espacioController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login'); // Cambia 'view('welcome')' por 'redirect('/login')'
 });
 
 Auth::routes();
@@ -27,28 +26,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
     Route::resource('facultads', App\Http\Controllers\FacultadController::class);
 //});
 
-
-
 Route::resource('carreras', App\Http\Controllers\CarreraController::class);
-
-
 Route::resource('cursos', App\Http\Controllers\CursoController::class);
-
-
 Route::resource('materias', App\Http\Controllers\MateriaController::class);
-
-
 Route::resource('espacios', App\Http\Controllers\EspacioController::class);
-
-
-    Route::resource('materiaEspacios', App\Http\Controllers\Materia_espacioController::class);
-
-
-
-
+Route::resource('materiaEspacios', App\Http\Controllers\Materia_espacioController::class);
 Route::resource('users', App\Http\Controllers\UserController::class);
 
 Route::get('/get-espacios/{materia}', [Materia_espacioController::class, 'getEspacios']);
-
-
 Route::resource('materiaEspaciosAudits', App\Http\Controllers\materia_espacios_auditController::class);
+

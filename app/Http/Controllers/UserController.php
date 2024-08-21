@@ -8,9 +8,11 @@ use App\Repositories\UserRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use App\Models\Facultad;
 use Spatie\Permission\Models\Role;
 use Flash;
 use Response;
+
 
 class UserController extends AppBaseController
 {
@@ -43,10 +45,10 @@ class UserController extends AppBaseController
      * @return Response
      */
     public function create()
-    {
-        return view('users.create');
-    }
-
+{
+    $facultades = Facultad::pluck('nombreFacu', 'id');
+    return view('users.create', compact('facultades'));
+}
     /**
      * Store a newly created User in storage.
      *
@@ -95,7 +97,8 @@ class UserController extends AppBaseController
      *
      * @return Response
      */
-    public function edit($id)
+
+public function edit($id)
 {
     $user = $this->userRepository->find($id);
 
@@ -104,11 +107,9 @@ class UserController extends AppBaseController
         return redirect(route('users.index'));
     }
 
-    // Obtén todos los roles disponibles
-    $roles = Role::pluck('name', 'name');
+    $facultades = Facultad::pluck('nombreFacu', 'id');
 
-    // Pasa el usuario y los roles a la vista
-    return view('users.edit', compact('user', 'roles'));
+    return view('users.edit', compact('user', 'facultades'));
 }
 
     /**
@@ -120,31 +121,37 @@ class UserController extends AppBaseController
      * @return Response
      */
     public function update($id, UpdateUserRequest $request)
-{
-    $user = $this->userRepository->find($id);
-
-    if (empty($user)) {
-        Flash::error('User not found');
+    {
+        $user = $this->userRepository->find($id);
+    
+        if (empty($user)) {
+            Flash::error('User not found');
+            return redirect(route('users.index'));
+        }
+    
+        $input = $request->all();
+    
+        // Verifica si se proporcionó una nueva contraseña en el formulario
+        if (!empty($input['password'])) {
+            // Encripta la nueva contraseña antes de guardarla
+            $input['password'] = Hash::make($input['password']);
+        } else {
+            // Si no se cambió la contraseña, quita el campo 'password' del array de entrada
+            unset($input['password']);
+        }
+    
+        // Actualiza los datos del usuario
+        $user = $this->userRepository->update($input, $id);
+    
+        // Sincroniza el rol del usuario con el nuevo rol seleccionado en el formulario
+        if ($request->has('role')) {
+            $user->syncRoles($request->role);
+        }
+    
+        Flash::success('User updated successfully.');
         return redirect(route('users.index'));
     }
-
-    $input = $request->all();
-
-    // Verifica si se proporcionó una nueva contraseña en el formulario
-    if (!empty($input['password'])) {
-        // Encripta la nueva contraseña antes de guardarla
-        $input['password'] = Hash::make($input['password']);
-    } else {
-        // Si no se cambió la contraseña, quita el campo 'password' del array de entrada
-        unset($input['password']);
-    }
-
-    $user = $this->userRepository->update($input, $id);
-
-    Flash::success('User updated successfully.');
-    return redirect(route('users.index'));
-}
-
+    
 
     /**
      * Remove the specified User from storage.

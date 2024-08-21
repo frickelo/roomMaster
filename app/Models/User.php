@@ -14,46 +14,35 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
         'carrera',
         'curso',
-        
+        'facultades_id', // Cambiado de 'facultad' a 'facultades_id'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
 
     public static $rules = [
         'name' => 'required',
         'email' => 'required',
         'password' => 'required',
         'carrera' => 'required',
-        'curso' => 'required'
+        'curso' => 'required',
+        'facultades_id' => 'required', // Regla para el nuevo atributo facultades_id
     ];
 
+    public function facultad()
+    {
+        return $this->belongsTo(Facultad::class, 'facultades_id');
+    }
 }

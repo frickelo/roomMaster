@@ -58,7 +58,11 @@ class Facultad extends Model
         return $this->hasMany('App\Models\Carrera');
     }
 
-    
+    public function users()
+{
+    return $this->hasMany(User::class, 'facultades_id');
+}
+
 
 
 }

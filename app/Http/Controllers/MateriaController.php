@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateMateriaRequest;
 use App\Repositories\MateriaRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
+use App\Models\Materia;
 use App\Models\Carrera;
 use Flash;
 use Response;
@@ -29,12 +30,42 @@ class MateriaController extends AppBaseController
      * @return Response
      */
     public function index(Request $request)
-    {
-        $materias = $this->materiaRepository->all();
+{
+    $user = auth()->user();
 
-        return view('materias.index')
-            ->with('materias', $materias);
+    if ($user->hasRole('admin')) {
+        $materias = Materia::whereHas('carrera', function ($query) use ($user) {
+            $query->where('facultades_id', $user->facultades_id);
+        })->get();
+    } elseif ($user->hasRole('super_admin')) {
+        $materias = Materia::all();
+    } else {
+        $materias = Materia::all();
     }
+
+    return view('materias.index')
+        ->with('materias', $materias);
+}
+
+
+public function getMaterias()
+{
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        $facultadId = $user->facultades_id;
+        $materias = Materia::whereHas('carrera', function ($query) use ($facultadId) {
+            $query->where('facultades_id', $facultadId);
+        })->get();
+    } elseif ($user->hasRole('super_admin')) {
+        $materias = Materia::all();
+    } else {
+        $materias = Materia::all();
+    }
+
+    return view('materias.index', compact('materias'));
+}
+
 
     /**
      * Show the form for creating a new Materia.
